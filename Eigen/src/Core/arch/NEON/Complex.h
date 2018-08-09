@@ -307,7 +307,12 @@ ptranspose(PacketBlock<Packet2cf,2>& kernel) {
   static uint64x2_t p2ul_CONJ_XOR = {0x0, 0x8000000000000000};
 #else
   const uint64_t  p2ul_conj_XOR_DATA[] = { 0x0, 0x8000000000000000 };
-  static uint64x2_t p2ul_CONJ_XOR = vld1q_u64( p2ul_conj_XOR_DATA );
+
+  inline static uint64x2_t vld1q_u64_macro_wrapper_func() {
+      return vld1q_u64( p2ul_conj_XOR_DATA );
+  }
+
+  static uint64x2_t p2ul_CONJ_XOR = vld1q_u64_macro_wrapper_func();
 #endif
 
 struct Packet1cd
