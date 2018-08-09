@@ -350,6 +350,11 @@ using std::ptrdiff_t;
 
 }
 
+// ArchLinux has defined _res macro in /usr/include/resolv.h
+#ifdef _res
+#undef _res
+#endif
+
 /** \defgroup Core_Module Core module
   * This is the main module of Eigen providing dense matrix and vector support
   * (both fixed and dynamic size) with all the features corresponding to a BLAS library
