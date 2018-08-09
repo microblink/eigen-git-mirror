@@ -108,7 +108,7 @@ template<typename PlainObjectType, int Options_, template <class> class MakePoin
     { }
 
     EIGEN_DEVICE_FUNC
-    EIGEN_STRONG_INLINE Index rank() const { return m_dimensions.rank(); }
+    EIGEN_STRONG_INLINE Index rank() const { return static_cast<Index>(m_dimensions.rank()); }
     EIGEN_DEVICE_FUNC
     EIGEN_STRONG_INLINE Index dimension(Index n) const { return m_dimensions[n]; }
     EIGEN_DEVICE_FUNC
