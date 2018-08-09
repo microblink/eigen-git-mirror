@@ -18,5 +18,5 @@
 #include "level2_real_impl.h"
 #include "level3_impl.h"
 
-float EIGEN_BLAS_FUNC(dsdot)(int* n, float* alpha, float* x, int* incx, float* y, int* incy)
-{ return double(*alpha) + BLASFUNC(dsdot)(n, x, incx, y, incy); }
+float EIGEN_BLAS_FUNC(sdsdot)(int* n, float* alpha, float* x, int* incx, float* y, int* incy)
+{ return static_cast< float >( double(*alpha) + BLASFUNC(dsdot)(n, x, incx, y, incy) ); }
