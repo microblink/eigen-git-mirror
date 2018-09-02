@@ -70,3 +70,4 @@ class EigenConan(ConanFile):
             self.cpp_info.defines.append('EIGEN_RUNTIME_NO_MALLOC')
         if self.options.heap_allocation_policy == 'disallowed':
             self.cpp_info.defines.append('EIGEN_NO_MALLOC')
+        self.cpp_info.includedirs.append('include/unsupported')
