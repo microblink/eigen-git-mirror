@@ -24,8 +24,10 @@ class EigenConan(ConanFile):
 
 
     def config_options(self):
-        self.options.default_number_of_registers = self.calc_default_number_of_registers()
-        self.options.apple_accelerate_mode = self.calc_apple_accelerate_mode()
+        if self.options.default_number_of_registers == None:
+            self.options.default_number_of_registers = self.calc_default_number_of_registers()
+        if self.options.apple_accelerate_mode == None:
+            self.options.apple_accelerate_mode = self.calc_apple_accelerate_mode()
 
 
     def calc_default_number_of_registers(self):
