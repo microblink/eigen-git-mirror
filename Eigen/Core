@@ -11,7 +11,11 @@
 #ifndef EIGEN_CORE_H
 #define EIGEN_CORE_H
 
-// first thing Eigen does: stop the compiler from reporting useless warnings.
+#ifndef EIGEN_CMAKE_INCLUDED
+#error "Please add include( Eigen ) to your CMake project to ensure consistent preprocessor definitions"
+#endif
+
+// first thing Eigen does: stop the compiler from committing suicide
 #include "src/Core/util/DisableStupidWarnings.h"
 
 // then include this file where all our macros are defined. It's really important to do it first because
