@@ -321,12 +321,12 @@ template<> EIGEN_STRONG_INLINE Packet2d paddsub<Packet2d>(const Packet2d& a, con
 
 template<> EIGEN_STRONG_INLINE Packet4f pnegate(const Packet4f& a)
 {
-  const Packet4f mask = _mm_castsi128_ps(_mm_setr_epi32(0x80000000,0x80000000,0x80000000,0x80000000));
+  const Packet4f mask = _mm_castsi128_ps(_mm_setr_epi32((int)0x80000000,(int)0x80000000,(int)0x80000000,(int)0x80000000));
   return _mm_xor_ps(a,mask);
 }
 template<> EIGEN_STRONG_INLINE Packet2d pnegate(const Packet2d& a)
 {
-  const Packet2d mask = _mm_castsi128_pd(_mm_setr_epi32(0x0,0x80000000,0x0,0x80000000));
+  const Packet2d mask = _mm_castsi128_pd(_mm_setr_epi32(0x0,(int)0x80000000,0x0,(int)0x80000000));
   return _mm_xor_pd(a,mask);
 }
 template<> EIGEN_STRONG_INLINE Packet4i pnegate(const Packet4i& a)
