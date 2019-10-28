@@ -342,7 +342,11 @@ union float32_bits {
   float f;
 };
 
-EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff) {
+EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff)
+#ifdef __clang__
+    __attribute__(( no_sanitize( "unsigned-integer-overflow" ) ))
+#endif
+{
 #if defined(EIGEN_HAS_CUDA_FP16) && defined(EIGEN_CUDA_ARCH) && EIGEN_CUDA_ARCH >= 300
   __half tmp_ff = __float2half(ff);
   return *(__half_raw*)&tmp_ff;
@@ -398,7 +402,11 @@ EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff) {
 #endif
 }
 
-EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC float half_to_float(__half_raw h) {
+EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC float half_to_float(__half_raw h)
+#ifdef __clang__
+    __attribute__(( no_sanitize( "implicit-integer-sign-change" ) ))
+#endif
+{
 #if defined(EIGEN_HAS_CUDA_FP16) && defined(EIGEN_CUDA_ARCH) && EIGEN_CUDA_ARCH >= 300
   return __half2float(h);
 
