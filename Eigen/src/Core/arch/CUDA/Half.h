@@ -344,7 +344,7 @@ union float32_bits {
 
 EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff)
 #ifdef __clang__
-    __attribute__(( no_sanitize( "unsigned-integer-overflow" ) ))
+    __attribute__(( no_sanitize( "integer" ) ))
 #endif
 {
 #if defined(EIGEN_HAS_CUDA_FP16) && defined(EIGEN_CUDA_ARCH) && EIGEN_CUDA_ARCH >= 300
@@ -404,7 +404,7 @@ EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff)
 
 EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC float half_to_float(__half_raw h)
 #ifdef __clang__
-    __attribute__(( no_sanitize( "implicit-integer-sign-change" ) ))
+    __attribute__(( no_sanitize( "integer" ) ))
 #endif
 {
 #if defined(EIGEN_HAS_CUDA_FP16) && defined(EIGEN_CUDA_ARCH) && EIGEN_CUDA_ARCH >= 300
