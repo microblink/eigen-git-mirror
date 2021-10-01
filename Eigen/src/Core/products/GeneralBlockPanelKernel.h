@@ -122,6 +122,10 @@ inline void manage_caching_sizes(Action action, std::ptrdiff_t* l1, std::ptrdiff
 
 template<typename LhsScalar, typename RhsScalar, int KcFactor, typename Index>
 void evaluateProductBlockingSizesHeuristic(Index& k, Index& m, Index& n, Index num_threads = 1)
+#ifdef __clang__
+    __attribute__(( no_sanitize( "implicit-integer-sign-change"       ) ))
+    __attribute__(( no_sanitize( "implicit-signed-integer-truncation" ) ))
+#endif
 {
   typedef gebp_traits<LhsScalar,RhsScalar> Traits;
 
