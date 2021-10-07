@@ -526,7 +526,11 @@ union float32_bits {
   float f;
 };
 
-EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff) {
+EIGEN_STRONG_INLINE EIGEN_DEVICE_FUNC __half_raw float_to_half_rtne(float ff)
+#ifdef __clang__
+    __attribute__(( no_sanitize( "integer" ) ))
+#endif
+{
 #if (defined(EIGEN_HAS_CUDA_FP16) && defined(EIGEN_CUDA_ARCH) && EIGEN_CUDA_ARCH >= 300) || \
   (defined(EIGEN_HAS_HIP_FP16) && defined(EIGEN_HIP_DEVICE_COMPILE))
   __half tmp_ff = __float2half(ff);
