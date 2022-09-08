@@ -1405,6 +1405,10 @@ EIGEN_STRONG_INLINE void peeled_kc_onestep(Index K, const LhsScalar* blA, const 
 
 template<typename LhsScalar, typename RhsScalar, typename Index, typename DataMapper, int mr, int nr, bool ConjugateLhs, bool ConjugateRhs>
 EIGEN_DONT_INLINE
+#ifdef __clang__
+// on "...actual_panel_rows = ..." around line 1693
+__attribute__(( no_sanitize( "unsigned-integer-overflow" ) ))
+#endif
 void gebp_kernel<LhsScalar,RhsScalar,Index,DataMapper,mr,nr,ConjugateLhs,ConjugateRhs>
   ::operator()(const DataMapper& res, const LhsScalar* blockA, const RhsScalar* blockB,
                Index rows, Index depth, Index cols, ResScalar alpha,
