@@ -332,19 +332,7 @@ struct product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,true,ConjugateLhs
     Index rows, Index cols,
     const Scalar* _lhs, Index lhsStride,
     const Scalar* _rhs, Index rhsStride,
-    Scalar* res,        Index resIncr, Index resStride,
-    const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking);
-};
-
-template <typename Scalar, typename Index,
-          int LhsStorageOrder, bool ConjugateLhs,
-          int RhsStorageOrder, bool ConjugateRhs,
-          int ResInnerStride>
-EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,true,ConjugateLhs, RhsStorageOrder,false,ConjugateRhs,ColMajor,ResInnerStride>::run(
-    Index rows, Index cols,
-    const Scalar* _lhs, Index lhsStride,
-    const Scalar* _rhs, Index rhsStride,
-    Scalar* _res,       Index resIncr, Index resStride,
+    Scalar* _rres,        Index resIncr, Index resStride,
     const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking)
   {
     Index size = rows;
@@ -358,7 +346,7 @@ EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,t
     LhsMapper lhs(_lhs,lhsStride);
     LhsTransposeMapper lhs_transpose(_lhs,lhsStride);
     RhsMapper rhs(_rhs,rhsStride);
-    ResMapper res(_res, resStride, resIncr);
+    ResMapper res(_rres, resStride, resIncr);
 
     Index kc = blocking.kc();                   // cache block size along the K direction
     Index mc = (std::min)(rows,blocking.mc());  // cache block size along the M direction
@@ -414,6 +402,7 @@ EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,t
       }
     }
   }
+};
 
 // matrix * selfadjoint product
 template <typename Scalar, typename Index,
@@ -427,19 +416,7 @@ struct product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,false,ConjugateLh
     Index rows, Index cols,
     const Scalar* _lhs, Index lhsStride,
     const Scalar* _rhs, Index rhsStride,
-    Scalar* res,        Index resIncr, Index resStride,
-    const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking);
-};
-
-template <typename Scalar, typename Index,
-          int LhsStorageOrder, bool ConjugateLhs,
-          int RhsStorageOrder, bool ConjugateRhs,
-          int ResInnerStride>
-EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,false,ConjugateLhs, RhsStorageOrder,true,ConjugateRhs,ColMajor,ResInnerStride>::run(
-    Index rows, Index cols,
-    const Scalar* _lhs, Index lhsStride,
-    const Scalar* _rhs, Index rhsStride,
-    Scalar* _res,       Index resIncr, Index resStride,
+    Scalar* _rres,        Index resIncr, Index resStride,
     const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking)
   {
     Index size = cols;
@@ -449,7 +426,7 @@ EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,f
     typedef const_blas_data_mapper<Scalar, Index, LhsStorageOrder> LhsMapper;
     typedef blas_data_mapper<typename Traits::ResScalar, Index, ColMajor, Unaligned, ResInnerStride> ResMapper;
     LhsMapper lhs(_lhs,lhsStride);
-    ResMapper res(_res,resStride, resIncr);
+    ResMapper res(_rres,resStride, resIncr);
 
     Index kc = blocking.kc();                   // cache block size along the K direction
     Index mc = (std::min)(rows,blocking.mc());  // cache block size along the M direction
@@ -478,6 +455,7 @@ EIGEN_DONT_INLINE void product_selfadjoint_matrix<Scalar,Index,LhsStorageOrder,f
       }
     }
   }
+};
 
 } // end namespace internal
 

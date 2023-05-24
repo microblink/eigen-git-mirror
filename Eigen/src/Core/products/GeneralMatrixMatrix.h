@@ -61,7 +61,7 @@ typedef typename ScalarBinaryOpTraits<LhsScalar, RhsScalar>::ReturnType ResScala
 static void run(Index rows, Index cols, Index depth,
   const LhsScalar* _lhs, Index lhsStride,
   const RhsScalar* _rhs, Index rhsStride,
-  ResScalar* _res, Index resIncr, Index resStride,
+  ResScalar* _rres, Index resIncr, Index resStride,
   ResScalar alpha,
   level3_blocking<LhsScalar,RhsScalar>& blocking,
   GemmParallelInfo<Index>* info = 0)
@@ -71,7 +71,7 @@ static void run(Index rows, Index cols, Index depth,
   typedef blas_data_mapper<typename Traits::ResScalar, Index, ColMajor,Unaligned,ResInnerStride> ResMapper;
   LhsMapper lhs(_lhs, lhsStride);
   RhsMapper rhs(_rhs, rhsStride);
-  ResMapper res(_res, resStride, resIncr);
+  ResMapper res(_rres, resStride, resIncr);
 
   Index kc = blocking.kc();                   // cache block size along the K direction
   Index mc = (std::min)(rows,blocking.mc());  // cache block size along the M direction

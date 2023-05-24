@@ -98,21 +98,7 @@ struct product_triangular_matrix_matrix<Scalar,Index,Mode,true,
     Index _rows, Index _cols, Index _depth,
     const Scalar* _lhs, Index lhsStride,
     const Scalar* _rhs, Index rhsStride,
-    Scalar* res,        Index resIncr, Index resStride,
-    const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking);
-};
-
-template <typename Scalar, typename Index, int Mode,
-          int LhsStorageOrder, bool ConjugateLhs,
-          int RhsStorageOrder, bool ConjugateRhs,
-          int ResInnerStride, int Version>
-EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,true,
-                                                        LhsStorageOrder,ConjugateLhs,
-                                                        RhsStorageOrder,ConjugateRhs,ColMajor,ResInnerStride,Version>::run(
-    Index _rows, Index _cols, Index _depth,
-    const Scalar* _lhs, Index lhsStride,
-    const Scalar* _rhs, Index rhsStride,
-    Scalar* _res,       Index resIncr, Index resStride,
+    Scalar* _rres,        Index resIncr, Index resStride,
     const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking)
   {
     // strip zeros
@@ -126,7 +112,7 @@ EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,true,
     typedef blas_data_mapper<typename Traits::ResScalar, Index, ColMajor, Unaligned, ResInnerStride> ResMapper;
     LhsMapper lhs(_lhs,lhsStride);
     RhsMapper rhs(_rhs,rhsStride);
-    ResMapper res(_res, resStride, resIncr);
+    ResMapper res(_rres, resStride, resIncr);
 
     Index kc = blocking.kc();                   // cache block size along the K direction
     Index mc = (std::min)(rows,blocking.mc());  // cache block size along the M direction
@@ -235,6 +221,7 @@ EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,true,
       }
     }
   }
+};
 
 // implements col-major += alpha * op(general) * op(triangular)
 template <typename Scalar, typename Index, int Mode,
@@ -256,21 +243,7 @@ struct product_triangular_matrix_matrix<Scalar,Index,Mode,false,
     Index _rows, Index _cols, Index _depth,
     const Scalar* _lhs, Index lhsStride,
     const Scalar* _rhs, Index rhsStride,
-    Scalar* res,        Index resIncr, Index resStride,
-    const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking);
-};
-
-template <typename Scalar, typename Index, int Mode,
-          int LhsStorageOrder, bool ConjugateLhs,
-          int RhsStorageOrder, bool ConjugateRhs,
-          int ResInnerStride, int Version>
-EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,false,
-                                                        LhsStorageOrder,ConjugateLhs,
-                                                        RhsStorageOrder,ConjugateRhs,ColMajor,ResInnerStride,Version>::run(
-    Index _rows, Index _cols, Index _depth,
-    const Scalar* _lhs, Index lhsStride,
-    const Scalar* _rhs, Index rhsStride,
-    Scalar* _res,       Index resIncr, Index resStride,
+    Scalar* _rres,        Index resIncr, Index resStride,
     const Scalar& alpha, level3_blocking<Scalar,Scalar>& blocking)
   {
     const Index PacketBytes = packet_traits<Scalar>::size*sizeof(Scalar);
@@ -285,7 +258,7 @@ EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,false,
     typedef blas_data_mapper<typename Traits::ResScalar, Index, ColMajor, Unaligned, ResInnerStride> ResMapper;
     LhsMapper lhs(_lhs,lhsStride);
     RhsMapper rhs(_rhs,rhsStride);
-    ResMapper res(_res, resStride, resIncr);
+    ResMapper res(_rres, resStride, resIncr);
 
     Index kc = blocking.kc();                   // cache block size along the K direction
     Index mc = (std::min)(rows,blocking.mc());  // cache block size along the M direction
@@ -393,6 +366,7 @@ EIGEN_DONT_INLINE void product_triangular_matrix_matrix<Scalar,Index,Mode,false,
       }
     }
   }
+};
 
 /***************************************************************************
 * Wrapper to product_triangular_matrix_matrix
