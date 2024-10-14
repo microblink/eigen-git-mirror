@@ -257,9 +257,14 @@ struct ptrue_impl {
 // Although this is technically not a valid bitmask, the scalar path for pselect
 // uses a comparison to zero, so this should still work in most cases. We don't
 // have another option, since the scalar type requires initialization.
+//
+// LMG note: This is now also enabled for all scalars because setting all bits to `1` will
+// cause the compiler to ignore the values when used with `-ffast-math` option. When all bits
+// are set to `1`, the floating point value is `NaN` and the compiler will ignore the value.
+// Related issue: https://github.com/llvm/llvm-project/issues/112002
 template<typename T>
-struct ptrue_impl<T, 
-    typename internal::enable_if<is_scalar<T>::value && NumTraits<T>::RequireInitialization>::type > {
+struct ptrue_impl<T,
+    typename internal::enable_if<is_scalar<T>::value>::type > {
   static EIGEN_DEVICE_FUNC inline T run(const T& /*a*/){
     return T(1);
   }
